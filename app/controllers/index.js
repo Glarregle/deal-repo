@@ -15,11 +15,15 @@ export default class IndexController extends Controller {
   @action
   async handleSubmit(event) {
     event.preventDefault();
+
+    // try catch
     this._resetErrors();
     const res = await this._fetchOrganization();
-    console.log({ res }, res.status);
+
     if (res.id) {
-      this.router.transitionTo('organization', { name: res.login });
+      this.router.transitionTo('organization', {
+        queryParams: { name: res.login },
+      });
     } else if (res.status === '404') {
       this.orgMissing = true;
     } else if (res.status === '401') {
@@ -48,6 +52,7 @@ export default class IndexController extends Controller {
   _resetErrors() {
     this.orgMissing = false;
     this.badKey = false;
+    this.error = false;
   }
 
   @action handleTokenInput(event) {
