@@ -5,5 +5,11 @@
 <div class="mt-2">
 	<p>Here you will find its repositories, you can filter them by visibility and language.</p>
 	<p>Good luck!</p>
+
+	<div>
+		{{#each this.model as |repo|}}
+		  <p>{{repo.name}}</p>
+		{{/each}}
+	</div>
 </div>
 </div>
