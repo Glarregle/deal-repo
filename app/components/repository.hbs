@@ -1,0 +1,19 @@
+<article class="p-4 border rounded-md shadow-md bg-white">
+  <div class="flex justify-between items-center mb-2">
+    <a href={{@repo.htmlUrl}} target="_blank" class="font-semibold text-blue-600 hover:underline text-xl" rel="noopener noreferrer">
+      {{@repo.name}}
+    </a>
+    <span class="ml-4 text-sm font-medium text-gray-500">
+      {{#if @repo.private}}
+        🔒 Private
+      {{else}}
+        🌍 Public
+      {{/if}}
+    </span>
+  </div>
+
+  <div class="text-gray-700">
+    <p><strong>Language:</strong> {{@repo.language}}</p>
+    <p><strong>Branches:</strong> {{@repo.branches.length}} branches</p>
+  </div>
+</article>
