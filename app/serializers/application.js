@@ -8,7 +8,7 @@ export default class ApplicationSerializer extends JSONAPISerializer {
         type: 'repository',
         attributes: {
           name: repo.name,
-          html_url: repo.html_url,
+          htmlUrl: repo.html_url,
           language: repo.language,
           private: repo.private,
         },
