@@ -1,23 +1,29 @@
-<div class="container mx-auto p-4 bg-gray-100 min-h-screen">
-  <h1 class="text-3xl font-bold mb-6 text-center">Find your Github Organization:</h1>
+<div class="container mx-auto p-20 bg-orange-500 min-h-screen">
+  <h1 class="text-3xl text-white font-bold mb-6 text-center">Find your Github Organization:</h1>
 
-  <div class="mb-4">
-    <label for="orgName" class="block text-sm font-medium text-gray-700">Organization Name:</label>
-    <input id="orgName" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" {{on "input" this.handleNameInput}}>
-  </div>
+  <form {{on "submit" this.handleSubmit}}>
+    <div class="mb-6">
+      <label for="orgName" class="block text-white text-bold">Organization Name:</label>
+      <input id="orgName" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" {{on "input" this.handleNameInput}} autocomplete="off">
+    </div>
 
-{{!--   <div class="mb-6">
-    <label for="token" class="block text-sm font-medium text-gray-700">GitHub API Token:</label>
-    <input id="token" type="password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" {{on "input" this.handleTokenInput}}>
-  </div> --}}
+    <div class="mb-8">
+      <label for="token" class="block text-white text-bold">GitHub API Token:</label>
+      <input id="token" type="password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" {{on "input" this.handleTokenInput}} autocomplete="off">
+    </div>
 
-  <button class="mb-6 px-4 py-2 bg-blue-500 text-white font-semibold rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" type="button" {{on "click" this.handleSubmit}}>
-    Find Organization
-  </button>
+    <button class="mb-6 px-6 py-4 bg-blue-600 text-white font-semibold rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" type="submit">
+      Find Organization
+    </button>
+  </form>
 
   {{#if this.orgMissing}}
      <div>
       Organization not found, try again!
     </div>
+  {{else if this.badKey}} 
+    <div>Your key doesn't seem right</div>
+  {{else if this.error}} 
+    <div>Ups! Something's wrong</div>
   {{/if}}
  </div> 
