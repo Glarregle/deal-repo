@@ -1,17 +1,20 @@
 <div class="container mx-auto p-20 bg-white min-h-screen">
 
-<h2 class="text-3xl"><span class="text-4xl font-bold"> {{this.name}} </span> organization </h2>
+  <h2 class="text-3xl"><span class="text-4xl font-bold"> {{this.name}} </span>
+    organization
+  </h2>
 
-<div class="mt-2">
-	<div class="mb-6">
-		<p>Here you will find its repositories, you can filter them by visibility and language.</p>
-		<p>Good luck!</p>
-	</div>
+  <div class="mt-2">
+    <div class="mb-6">
+      <p>Here you will find its repositories, you can filter them by visibility
+        and language.</p>
+      <p>Good luck!</p>
+    </div>
 
-	<div>
-		{{#each this.model as |repo|}}
-		  <Repository @repo={{repo}} class="mb-6"/>
-		{{/each}}
-	</div>
-</div>
+    <div>
+      {{#each this.model as |repo|}}
+        <Repository @repo={{repo}} class="mb-6" />
+      {{/each}}
+    </div>
+  </div>
 </div>
