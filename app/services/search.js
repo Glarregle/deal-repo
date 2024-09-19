@@ -5,8 +5,8 @@ export default class SearchService extends Service {
   @service store;
 
   async fetchRepositories(params) {
-  	// params can be q with sort
-  	// also filters and pagination
+    // params can be q with sort
+    // also filters and pagination
     console.log('will fetch', ...arguments);
     let adapter = this.store.adapterFor('application');
 
@@ -27,7 +27,7 @@ export default class SearchService extends Service {
   }
 
   _buildGithubQuery(params) {
-  	const { name } = params;
+    const { name } = params;
     let query = `org:${name}`;
     // if visibility or language add to query;
     return query;

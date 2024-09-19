@@ -10,7 +10,7 @@ export default class ApplicationAdapter extends JSONAPIAdapter {
   }
 
   async getRepositories(queryString) {
-    const q = encodeURIComponent(queryString)
+    const q = encodeURIComponent(queryString);
     const url = `${this.namespace}/search/repositories?q=${q}&sort=interactions&per_page=30`;
     const response = await fetch(url, {
       method: 'GET',

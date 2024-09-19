@@ -34,7 +34,7 @@ export default class RepositoriesComponent extends Component {
   async searchRepos() {
     this.isLoading = true;
     const { name } = this.args.params;
-    const query = { name }
+    const query = { name };
     try {
       this.repositories = await this.search.fetchRepositories(query);
     } finally {

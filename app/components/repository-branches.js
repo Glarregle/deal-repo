@@ -26,7 +26,7 @@ export default class RepositoryBranchesComponent extends Component {
   }
 
   get hasBranches() {
-  	return this.results.length > 0;
+    return this.results.length > 0;
   }
 
   get hasLoadMore() {}
