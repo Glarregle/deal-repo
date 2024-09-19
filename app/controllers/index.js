@@ -6,7 +6,7 @@ import { service } from '@ember/service';
 export default class IndexController extends Controller {
   @service router;
 
-	@tracked orgName = '';
+  @tracked token = '';
   @tracked orgName = '';
   @tracked orgMissing = false;
   @tracked badKey = false;
@@ -15,11 +15,15 @@ export default class IndexController extends Controller {
   @action
   async handleSubmit(event) {
     event.preventDefault();
+
+    // try catch
     this._resetErrors();
     const res = await this._fetchOrganization();
-    console.log({ res }, res.status);
+
     if (res.id) {
-      this.router.transitionTo('organization', { name: res.login });
+      this.router.transitionTo('organization', {
+        queryParams: { name: res.login },
+      });
     } else if (res.status === '404') {
       this.orgMissing = true;
     } else if (res.status === '401') {
@@ -34,10 +38,10 @@ export default class IndexController extends Controller {
     const { orgName, token } = this;
     // try catch
     if (orgName && token) {
-      const url = `https://api.github.com/orgs/${this.orgName}`;
+      const url = `https://api.github.com/orgs/${orgName}`;
       const response = await fetch(url, {
         headers: {
-          Authorization: `token ${this.token}`,
+          Authorization: `token ${token}`,
         },
       });
       return response.json();
@@ -48,6 +52,7 @@ export default class IndexController extends Controller {
   _resetErrors() {
     this.orgMissing = false;
     this.badKey = false;
+    this.error = false;
   }
 
   @action handleTokenInput(event) {
