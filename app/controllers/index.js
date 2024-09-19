@@ -12,25 +12,35 @@ export default class IndexController extends Controller {
   @tracked orgMissing = false;
   @tracked badKey = false;
   @tracked error = false;
+  @tracked isLoading = false;
 
   @action
   async handleSubmit(event) {
     event.preventDefault();
 
-    // try catch
-    this._resetErrors();
-    const res = await this._fetchOrganization();
+    this.isLoading = true; // Set loading state
 
-    if (res.id) {
-      this.router.transitionTo('organization', {
-        queryParams: { name: res.login },
-      });
-    } else if (res.status === '404') {
-      this.orgMissing = true;
-    } else if (res.status === '401') {
-      this.badKey = true;
-    } else {
-      this.error = true;
+    this._resetErrors();
+
+    try {
+      const res = await this._fetchOrganization();
+      if (res && res.login) {
+        this.router.transitionTo('organization', {
+          queryParams: { name: res.login },
+        });
+      } else {
+        throw res;
+      }
+    } catch (error) {
+      if (error?.status === '404') {
+        this.orgMissing = true;
+      } else if (error?.status === '401') {
+        this.badKey = true;
+      } else {
+        this.error = true;
+      }
+    } finally {
+      this.isLoading = false;
     }
   }
 
