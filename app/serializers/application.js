@@ -3,7 +3,7 @@ import JSONAPISerializer from '@ember-data/serializer/json-api';
 export default class ApplicationSerializer extends JSONAPISerializer {
   normalizeResponse(store, primaryModelClass, payload) {
     if (primaryModelClass.modelName === 'repository') {
-      const repositories = payload.map((repo) => ({
+      const repositories = payload.items.map((repo) => ({
         id: `${repo.id}`,
         type: 'repository',
         attributes: {

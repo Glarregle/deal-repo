@@ -1,20 +1,124 @@
 <div class="container mx-auto p-20 bg-white min-h-screen">
+  <LinkTo
+    @route="index"
+    class="bg-orange-100 text-white font-bold py-2 px-2 rounded hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-fuchsia-600 focus:ring-opacity-50 mb-16"
+  >
+    ⬅️
+  </LinkTo>
 
-  <h2 class="text-3xl"><span class="text-4xl font-bold"> {{this.name}} </span>
-    organization
-  </h2>
-
-  <div class="mt-2">
-    <div class="mb-6">
+  <Repositories @params={{hash name=this.name}} as |repositoryProvider|>
+    <h2 class="mt-8 text-3xl" {{did-insert repositoryProvider.fns.search}}>
+      <span class="text-4xl font-bold"> {{this.name}} </span>
+      organization
+    </h2>
+    <div class="my-6">
       <p>Here you will find its repositories, you can filter them by visibility
         and language.</p>
-      <p>Good luck!</p>
+      <p>Good searching!</p>
     </div>
 
-    <div>
-      {{#each this.model as |repo|}}
-        <Repository @repo={{repo}} class="mb-6" />
-      {{/each}}
-    </div>
-  </div>
+    <RepositoryFilter
+      @repos={{repositoryProvider.data.repositories}}
+      as |filter|
+    >
+
+      <div class="flex space-x-4">
+        {{! Filter by Type }}
+        <div class="w-1/2">
+          <label
+            for="type-filter"
+            class="block text-sm font-medium text-gray-700"
+          >Filter by Type</label>
+          <PowerSelect
+            @onChange={{filter.fns.setVisibility}}
+            @options={{filter.data.visibilityOptions}}
+            @selected={{capitalize filter.data.visibility}}
+            class="block w-full mt-1 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            placeholder="Select type"
+            id="type-filter"
+            as |type|
+          >
+            <span>{{capitalize type}}</span>
+          </PowerSelect>
+        </div>
+
+        {{! Filter by Language }}
+        <div class="w-1/2">
+          <label
+            for="language-filter"
+            class="block text-sm font-medium text-gray-700"
+          >Filter by Language</label>
+          <PowerSelect
+            @options={{filter.data.languageOptions}}
+            @selected={{capitalize filter.data.language}}
+            @onChange={{filter.fns.setLanguage}}
+            class="block w-full mt-1 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            placeholder="Select language"
+            id="language-filter"
+            as |lang|
+          >
+            <span>{{capitalize lang}}</span>
+          </PowerSelect>
+
+        </div>
+      </div>
+
+      <div class="mt-2">
+        <div>
+          {{#if repositoryProvider.data.isLoading}}
+            <Spinner class="mt-16" />
+          {{else}}
+
+            {{#each filter.data.filteredRepos as |repo|}}
+              <RepositoryBranches as |branchesProvider|>
+                <RepositoryCard
+                  @repo={{repo}}
+                  class="mt-6"
+                  {{did-insert
+                    (fn
+                      branchesProvider.fns.search
+                      (hash repo=repo.name orgName=this.name)
+                    )
+                  }}
+                >
+                  <div class="flex">
+                    <strong class="mr-4">Branches:</strong>
+                    {{#if branchesProvider.data.isLoading}}
+                      <Spinner class="w-4 h-4" />
+                    {{else}}
+                      {{branchesProvider.data.results.length}}
+                    {{/if}}
+                  </div>
+                </RepositoryCard>
+
+                {{#if branchesProvider.data.hasBranches}}
+                  <BasicDropdown @renderInPlace={{true}} as |dd|>
+                    <dd.Trigger
+                      class="cursor-pointer text-black font-semibold px-8 border-2 shadow-inner border-lime-300 hover:bg-lime-100"
+                    >See branches</dd.Trigger>
+                    <dd.Content
+                      class="mt-2 w-full bg-white border border-gray-300 shadow-lg rounded-md p-4 z-10 !static"
+                    >
+                      <ul>
+                        {{#each branchesProvider.data.results as |branch|}}
+                          <li
+                            class="text-gray-700 hover:shadow-inner p-2 hover:bg-fuchsia-100"
+                          >{{branch.name}}</li>
+                        {{/each}}
+                      </ul>
+                    </dd.Content>
+                  </BasicDropdown>
+                {{else}}
+                  <div class="flex w-full h-7"></div>
+                {{/if}}
+              </RepositoryBranches>
+            {{/each}}
+
+          {{/if}}
+
+        </div>
+      </div>
+    </RepositoryFilter>
+  </Repositories>
 </div>
+{{! add simple pagination }}

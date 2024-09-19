@@ -1,36 +1,46 @@
 <div class="container mx-auto p-20 bg-orange-500 min-h-screen">
-  <h1 class="text-3xl text-white font-bold mb-6 text-center">Find your Github
+  <h1 class="text-4xl text-white font-bold mb-8 text-center">Find your Github
     Organization:</h1>
 
   <form {{on "submit" this.handleSubmit}}>
     <div class="mb-6">
-      <label for="orgName" class="block text-white text-bold">Organization Name:</label>
+      <label
+        for="orgName"
+        class="block text-white text-shadow-custom font-extrabold tracking-wider text-xl"
+      >Organization Name:</label>
       <input
         id="orgName"
         type="text"
-        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        class="mt-2 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         {{on "input" this.handleNameInput}}
         autocomplete="off"
       />
     </div>
 
     <div class="mb-8">
-      <label for="token" class="block text-white text-bold">GitHub API Token:</label>
+      <label
+        for="token"
+        class="block text-white text-shadow-custom font-extrabold tracking-wider text-xl"
+      >GitHub API Token:</label>
       <input
         id="token"
         type="password"
-        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        class="mt-2 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         {{on "input" this.handleTokenInput}}
         autocomplete="off"
       />
     </div>
 
-    <button
-      class="mb-6 px-6 py-4 bg-blue-600 text-white font-semibold rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-      type="submit"
-    >
-      Find Organization
-    </button>
+    {{#if this.isLoading}}
+      <Spinner />
+    {{else}}
+      <button
+        class="mb-6 px-6 py-4 bg-blue-600 text-white font-semibold rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        type="submit"
+      >
+        Find Organization
+      </button>
+    {{/if}}
   </form>
 
   {{#if this.orgMissing}}
