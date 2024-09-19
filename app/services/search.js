@@ -32,8 +32,8 @@ export default class SearchService extends Service {
   }
 
   _buildGithubQuery(params) {
-  	// If the application were to send more server-side filters
-  	// here the query string could be built
+    // If the application were to send more server-side filters
+    // here the query string could be built
     const { name } = params;
     let query = `org:${name}`;
     return query;

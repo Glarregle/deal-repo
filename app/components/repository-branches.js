@@ -29,7 +29,9 @@ export default class RepositoryBranchesComponent extends Component {
     return this.results.length > 0;
   }
 
-  get hasLoadMore() {}
+  get hasLoadMore() {
+    return false;
+  }
 
   @action
   async searchBranches(query) {

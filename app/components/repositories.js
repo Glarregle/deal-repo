@@ -24,7 +24,9 @@ export default class RepositoriesComponent extends Component {
     };
   }
 
-  get hasLoadMore() {}
+  get hasLoadMore() {
+    return false;
+  }
 
   get results() {
     return this.repositories;

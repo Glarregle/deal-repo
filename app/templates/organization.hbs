@@ -1,8 +1,11 @@
 <div class="container mx-auto p-20 bg-white min-h-screen">
-	<LinkTo @route="index" class="bg-orange-100 text-white font-bold py-2 px-2 rounded hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-fuchsia-600 focus:ring-opacity-50 mb-16">
-	   ⬅️
-	</LinkTo>
-  
+  <LinkTo
+    @route="index"
+    class="bg-orange-100 text-white font-bold py-2 px-2 rounded hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-fuchsia-600 focus:ring-opacity-50 mb-16"
+  >
+    ⬅️
+  </LinkTo>
+
   <Repositories @params={{hash name=this.name}} as |repositoryProvider|>
     <h2 class="mt-8 text-3xl" {{did-insert repositoryProvider.fns.search}}>
       <span class="text-4xl font-bold"> {{this.name}} </span>
@@ -63,7 +66,7 @@
       <div class="mt-2">
         <div>
           {{#if repositoryProvider.data.isLoading}}
-            <Spinner class="mt-16"/>
+            <Spinner class="mt-16" />
           {{else}}
 
             {{#each filter.data.filteredRepos as |repo|}}
