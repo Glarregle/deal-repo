@@ -6,7 +6,7 @@ import { service } from '@ember/service';
 export default class IndexController extends Controller {
   @service router;
 
-	@tracked orgName = '';
+  @tracked token = '';
   @tracked orgName = '';
   @tracked orgMissing = false;
   @tracked badKey = false;
@@ -38,10 +38,10 @@ export default class IndexController extends Controller {
     const { orgName, token } = this;
     // try catch
     if (orgName && token) {
-      const url = `https://api.github.com/orgs/${this.orgName}`;
+      const url = `https://api.github.com/orgs/${orgName}`;
       const response = await fetch(url, {
         headers: {
-          Authorization: `token ${this.token}`,
+          Authorization: `token ${token}`,
         },
       });
       return response.json();
