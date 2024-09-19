@@ -1,20 +1,61 @@
 <div class="container mx-auto p-20 bg-white min-h-screen">
+  <Repositories @params={{hash name=this.name}} as |repositoryProvider|>
+    <h2 class="text-3xl" {{did-insert repositoryProvider.fns.search}}>
+      <span class="text-4xl font-bold"> {{this.name}} </span>
+      organization
+    </h2>
 
-  <h2 class="text-3xl"><span class="text-4xl font-bold"> {{this.name}} </span>
-    organization
-  </h2>
+{{!--     filters will set controller qps and the trigger search
+    which in terms get the params from the controller
+ --}}
+    <div class="mt-2">
+      <div class="mb-6">
+        <p>Here you will find its repositories, you can filter them by
+          visibility and language.</p>
+        <p>Good searching!</p>
+      </div>
 
-  <div class="mt-2">
-    <div class="mb-6">
-      <p>Here you will find its repositories, you can filter them by visibility
-        and language.</p>
-      <p>Good luck!</p>
+      <div>
+        {{#if repositoryProvider.data.isLoading}}
+          <Spinner />
+        {{else}}
+          {{#each repositoryProvider.data.repositories as |repo|}}
+            <RepositoryBranches as |branchesProvider|>
+              <RepositoryCard
+                @repo={{repo}}
+                class="mt-6"
+                {{did-insert
+                  (fn
+                    branchesProvider.fns.search
+                    (hash repo=repo.name orgName=this.name)
+                  )
+                }}
+              >
+                <div>
+                  <strong>Branches:</strong>
+                  {{branchesProvider.data.results.length}}
+                </div>
+              </RepositoryCard>
+
+              {{#if branchesProvider.data.hasBranches}}
+				  <BasicDropdown @renderInPlace={{true}} as |dd|>
+					  <dd.Trigger class="cursor-pointer text-black font-semibold px-8 border-2 shadow-inner border-lime-500">See branches</dd.Trigger>
+					  <dd.Content 
+					    class="mt-2 w-full bg-white border border-gray-300 shadow-lg rounded-md p-4 z-10 !static">
+					    <ul>
+						    {{#each branchesProvider.data.results as |branch|}}
+						      <li class="text-gray-700 hover:shadow-inner p-2 hover:bg-fuchsia-100">{{branch.name}}</li>
+						    {{/each}}
+						</ul>
+					  </dd.Content>
+					</BasicDropdown>
+			  {{/if}}
+            </RepositoryBranches>
+          {{/each}}
+        {{/if}}
+
+      </div>
     </div>
-
-    <div>
-      {{#each this.model as |repo|}}
-        <Repository @repo={{repo}} class="mb-6" />
-      {{/each}}
-    </div>
-  </div>
+  </Repositories>
 </div>
+{{! add simple pagination }}
