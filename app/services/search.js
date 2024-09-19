@@ -1,16 +1,14 @@
 import Service from '@ember/service';
 import { service } from '@ember/service';
 
+const TOKEN_KEY = 'github-token';
+
 export default class SearchService extends Service {
   @service store;
 
   async fetchRepositories(params) {
-    // params can be q with sort
-    // also filters and pagination
-    console.log('will fetch', ...arguments);
     let adapter = this.store.adapterFor('application');
-
-    // get token from service
+    adapter.setToken(this.getToken());
 
     const query = this._buildGithubQuery(params);
     const response = await adapter.getRepositories(query);
@@ -19,17 +17,25 @@ export default class SearchService extends Service {
 
   async fetchBranches({ orgName, repo }) {
     let adapter = this.store.adapterFor('application');
-
-    // get token from service
+    adapter.setToken(this.getToken());
 
     const response = await adapter.getBranches({ orgName, repo });
     return this._handleResponse(response, 'branch');
   }
 
+  saveToken(token) {
+    window.localStorage.setItem(TOKEN_KEY, token);
+  }
+
+  getToken() {
+    return window.localStorage.getItem(TOKEN_KEY);
+  }
+
   _buildGithubQuery(params) {
+  	// If the application were to send more server-side filters
+  	// here the query string could be built
     const { name } = params;
     let query = `org:${name}`;
-    // if visibility or language add to query;
     return query;
   }
 
