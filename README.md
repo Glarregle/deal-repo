@@ -4,17 +4,33 @@
 
 <br>
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+This README outlines the concepts of the design of this Ember application.
 
-## Prerequisites
+## Composability
 
-You will need the following things properly installed on your computer.
+Is structured around reusable components that encapsulates specific logic or UI.
 
-- [Git](https://git-scm.com/)
-- [Node.js](https://nodejs.org/) (with npm)
-- [Ember CLI](https://cli.emberjs.com/release/)
-- [Google Chrome](https://google.com/chrome/)
+By using contextual components that yield actions and data, we leverage glimmer features and the specific logic, in a way that is highly composable, flexible and reusable, template or application-wide.
+
+## Provider components
+
+The application uses "provider" components, which act as providers for the child components. This approach separates concerns, decoupling data fetching from presentation logic.
+
+## Declarative Rendering
+
+The application uses a declarative rendering approach to simplify UI logic. Without having to manually manipulate the DOM we instead declare how the UI should look according to data state.
+
+## Leverage QP
+
+In `/organization` route, we leverage query params (and localStorage) to be able to reload the page or land in it through a different tab, maintaining state.
+
+## API centralized
+
+Adapter and serializer are utilized to centralize API logic, (namespace, headers, data normalization) and align with Ember Data conventions.
+
+## Model layer
+
+Even though the application is not really making use of the `store` this would become relevant when we want to share data accross the application, get the same record from different routes, leverage model updating, making it a unified source of information.
 
 ## Installation
 
@@ -24,32 +40,9 @@ You will need the following things properly installed on your computer.
 
 ## Running / Development
 
-- `npm run start`
+- `ember serve`
 - Visit your app at [http://localhost:4200](http://localhost:4200).
 - Visit your tests at [http://localhost:4200/tests](http://localhost:4200/tests).
-
-### Code Generators
-
-Make use of the many generators for code, try `ember help generate` for more details
-
-### Running Tests
-
-- `npm run test`
-- `npm run test:ember -- --server`
-
-### Linting
-
-- `npm run lint`
-- `npm run lint:fix`
-
-### Building
-
-- `npm exec ember build` (development)
-- `npm run build` (production)
-
-### Deploying
-
-Specify what it takes to deploy your app.
 
 ## Further Reading / Useful Links
 
