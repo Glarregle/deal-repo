@@ -37,7 +37,6 @@
           </PowerSelect>
         </div>
 
-        {{! Filter by Language }}
         <div class="w-1/2">
           <label
             for="language-filter"
@@ -59,11 +58,16 @@
       </div>
 
       <div class="mt-2">
-        <div>
-          {{#if repositoryProvider.data.isLoading}}
-            <Spinner class="mt-16" />
-          {{else}}
 
+        {{#if repositoryProvider.data.isLoading}}
+          <Spinner class="mt-16" />
+        {{else if repositoryProvider.data.isError}}
+          <div class="flex justify-center my-12">
+            <p>Problem fetching repositories.</p>
+          </div>
+
+        {{else if repositoryProvider.data.hasRepositories}}
+          <div>
             {{#each filter.data.filteredRepos as |repo|}}
               <RepositoryBranches as |branchesProvider|>
                 <RepositoryCard
@@ -108,10 +112,13 @@
                 {{/if}}
               </RepositoryBranches>
             {{/each}}
+          </div>
+        {{else}}
+	        <div class="flex justify-center my-12">
+	          <p class="text-blue-800">This organization has no repositories yet.</p>
+	        </div>
+        {{/if}}
 
-          {{/if}}
-
-        </div>
       </div>
     </RepositoryFilter>
   </Repositories>
