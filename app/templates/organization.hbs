@@ -1,10 +1,5 @@
 <div class="container mx-auto p-20 bg-white min-h-screen">
-  <LinkTo
-    @route="index"
-    class="bg-orange-100 text-white font-bold py-2 px-2 rounded hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-fuchsia-600 focus:ring-opacity-50 mb-16"
-  >
-    ⬅️
-  </LinkTo>
+  <BackHome data-test-go-back />
 
   <Repositories @params={{hash name=this.name}} as |repositoryProvider|>
     <h2 class="mt-8 text-3xl" {{did-insert repositoryProvider.fns.search}}>
@@ -42,7 +37,6 @@
           </PowerSelect>
         </div>
 
-        {{! Filter by Language }}
         <div class="w-1/2">
           <label
             for="language-filter"
@@ -64,11 +58,16 @@
       </div>
 
       <div class="mt-2">
-        <div>
-          {{#if repositoryProvider.data.isLoading}}
-            <Spinner class="mt-16" />
-          {{else}}
 
+        {{#if repositoryProvider.data.isLoading}}
+          <Spinner class="mt-16" />
+        {{else if repositoryProvider.data.isError}}
+          <div class="flex justify-center my-12">
+            <p>Problem fetching repositories</p>
+          </div>
+
+        {{else if repositoryProvider.data.hasRepositories}}
+          <div>
             {{#each filter.data.filteredRepos as |repo|}}
               <RepositoryBranches as |branchesProvider|>
                 <RepositoryCard
@@ -80,13 +79,18 @@
                       (hash repo=repo.name orgName=this.name)
                     )
                   }}
+                  data-test-repository
                 >
                   <div class="flex">
-                    <strong class="mr-4">Branches:</strong>
+                    <strong class="mr-2">Branches:</strong>
                     {{#if branchesProvider.data.isLoading}}
                       <Spinner class="w-4 h-4" />
+                    {{else if branchesProvider.data.isError}}
+                      <p class="text-lime-200">Problem fetching branches</p>
                     {{else}}
-                      {{branchesProvider.data.results.length}}
+                      <span
+                        data-test-branches-qty
+                      >{{branchesProvider.data.results.length}}</span>
                     {{/if}}
                   </div>
                 </RepositoryCard>
@@ -95,6 +99,7 @@
                   <BasicDropdown @renderInPlace={{true}} as |dd|>
                     <dd.Trigger
                       class="cursor-pointer text-black font-semibold px-8 border-2 shadow-inner border-lime-300 hover:bg-lime-100"
+                      data-test-branches-dropdown
                     >See branches</dd.Trigger>
                     <dd.Content
                       class="mt-2 w-full bg-white border border-gray-300 shadow-lg rounded-md p-4 z-10 !static"
@@ -103,6 +108,7 @@
                         {{#each branchesProvider.data.results as |branch|}}
                           <li
                             class="text-gray-700 hover:shadow-inner p-2 hover:bg-fuchsia-100"
+                            data-test-branch-item
                           >{{branch.name}}</li>
                         {{/each}}
                       </ul>
@@ -113,10 +119,13 @@
                 {{/if}}
               </RepositoryBranches>
             {{/each}}
+          </div>
+        {{else}}
+          <div class="flex justify-center my-12">
+            <p class="text-blue-800">This organization has no repositories yet.</p>
+          </div>
+        {{/if}}
 
-          {{/if}}
-
-        </div>
       </div>
     </RepositoryFilter>
   </Repositories>

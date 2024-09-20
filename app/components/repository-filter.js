@@ -44,15 +44,16 @@ export default class RepoFilterComponent extends Component {
 
   get filteredRepositories() {
     let repos = [...this.args.repos];
+
     if (this._isValue(this.visibility)) {
       repos = repos.filter((r) =>
         this.visibility === 'private' ? r.private : !r.private,
       );
     }
+
     if (this._isValue(this.language))
       repos = repos.filter((r) => r.language === this.language);
 
-    console.log({ repos });
     return repos;
   }
 

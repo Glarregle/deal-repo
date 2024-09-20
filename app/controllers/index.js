@@ -51,7 +51,6 @@ export default class IndexController extends Controller {
     // save token in storage
     this.search.saveToken(token);
 
-    // try catch
     if (orgName && token) {
       const url = `https://api.github.com/orgs/${orgName}`;
       const response = await fetch(url, {

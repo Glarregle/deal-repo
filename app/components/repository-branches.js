@@ -7,6 +7,7 @@ export default class RepositoryBranchesComponent extends Component {
   @service search;
 
   @tracked isLoading = false;
+  @tracked isError = false;
   @tracked results = [];
 
   get fns() {
@@ -19,6 +20,7 @@ export default class RepositoryBranchesComponent extends Component {
   get data() {
     return {
       isLoading: this.isLoading,
+      isError: this.isError,
       results: this.results,
       hasBranches: this.hasBranches,
       // hasLoadMore: this.hasLoadMore,
@@ -36,8 +38,12 @@ export default class RepositoryBranchesComponent extends Component {
   @action
   async searchBranches(query) {
     this.isLoading = true;
+    this.isError = false;
+
     try {
       this.results = await this.search.fetchBranches(query);
+    } catch {
+      this.isError = true;
     } finally {
       this.isLoading = false;
     }
