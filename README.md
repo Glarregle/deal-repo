@@ -4,7 +4,7 @@
 
 <br>
 
-This README outlines the concepts of the design of this Ember application.
+This README outlines the concepts under the design of this Ember application.
 
 ## Composability
 
