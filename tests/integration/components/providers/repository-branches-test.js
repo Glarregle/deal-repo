@@ -145,15 +145,23 @@ module('Integration | Component | repository-branches', function (hooks) {
       </RepositoryBranches>
     `);
 
-    assert.dom('[data-test-loading]').doesNotExist('No loading message is rendered initially');
-    assert.dom('[data-test-error]').doesNotExist('No error message is rendered initially');
-    assert.dom('[data-test-branches-list]').doesNotExist('No branches are rendered initially');
+    assert
+      .dom('[data-test-loading]')
+      .doesNotExist('No loading message is rendered initially');
+    assert
+      .dom('[data-test-error]')
+      .doesNotExist('No error message is rendered initially');
+    assert
+      .dom('[data-test-branches-list]')
+      .doesNotExist('No branches are rendered initially');
 
     click('[data-test-search-btn]');
     await waitFor('[data-test-loading]');
 
     // Check loading state
-    assert.dom('[data-test-loading]').exists('Loading message is shown while fetching branches');
+    assert
+      .dom('[data-test-loading]')
+      .exists('Loading message is shown while fetching branches');
 
     await settled();
 
@@ -162,6 +170,8 @@ module('Integration | Component | repository-branches', function (hooks) {
       .exists('Error message is displayed after failing');
 
     // Verify that no branches are displayed after an error
-    assert.dom('[data-test-branch-item]').doesNotExist('No branches are rendered after error');
+    assert
+      .dom('[data-test-branch-item]')
+      .doesNotExist('No branches are rendered after error');
   });
 });

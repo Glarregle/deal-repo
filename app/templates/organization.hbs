@@ -63,7 +63,7 @@
           <Spinner class="mt-16" />
         {{else if repositoryProvider.data.isError}}
           <div class="flex justify-center my-12">
-            <p>Problem fetching repositories.</p>
+            <p>Problem fetching repositories</p>
           </div>
 
         {{else if repositoryProvider.data.hasRepositories}}
@@ -81,9 +81,11 @@
                   }}
                 >
                   <div class="flex">
-                    <strong class="mr-4">Branches:</strong>
+                    <strong class="mr-2">Branches:</strong>
                     {{#if branchesProvider.data.isLoading}}
                       <Spinner class="w-4 h-4" />
+                    {{else if branchesProvider.data.isError}}
+                      <p class="text-lime-200">Problem fetching branches</p>
                     {{else}}
                       {{branchesProvider.data.results.length}}
                     {{/if}}
