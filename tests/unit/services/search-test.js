@@ -10,7 +10,7 @@ module('Unit | Service | search', function (hooks) {
 
     // Test saveToken
     service.saveToken(token);
-    assert.equal(
+    assert.strictEqual(
       window.localStorage.getItem('github-token'),
       token,
       'Token is saved in localStorage',
@@ -18,7 +18,11 @@ module('Unit | Service | search', function (hooks) {
 
     // Test getToken
     const retrievedToken = service.getToken();
-    assert.equal(retrievedToken, token, 'Token is retrieved from localStorage');
+    assert.strictEqual(
+      retrievedToken,
+      token,
+      'Token is retrieved from localStorage',
+    );
   });
 
   test('it builds a GitHub query correctly', function (assert) {
@@ -26,7 +30,7 @@ module('Unit | Service | search', function (hooks) {
     const params = { name: 'emberjs' };
 
     const query = service._buildGithubQuery(params);
-    assert.equal(
+    assert.strictEqual(
       query,
       'org:emberjs',
       'Query is built correctly with org name',

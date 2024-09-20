@@ -9,6 +9,7 @@ module('Integration | Component | repository-branches', function (hooks) {
   setupRenderingTest(hooks);
 
   class MockSearchService extends Service {
+    // Mock branches fetch
     fetchBranches(query) {
       return new Promise((resolve, reject) => {
         later(() => {
@@ -56,7 +57,6 @@ module('Integration | Component | repository-branches', function (hooks) {
       .doesNotExist('No branches are rendered initially');
 
     await click('[data-test-search-btn]');
-    await settled();
 
     // Verify that branches are displayed
     assert

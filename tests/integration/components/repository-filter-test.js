@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render, click, settled } from '@ember/test-helpers';
+import { render, click } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
 
 module('Integration | Component | repository-filter', function (hooks) {
@@ -17,8 +17,8 @@ module('Integration | Component | repository-filter', function (hooks) {
 
     await render(hbs`
       <RepositoryFilter @repos={{this.repos}} as |filter|>
-        <button data-test-visibility-filter="all" {{on "click" (fn filter.fns.setVisibility "all")}}>All</button>
-        <button data-test-visibility-filter="private" {{on "click" (fn filter.fns.setVisibility "private")}}>Private</button>
+        <button data-test-visibility-filter="all" type="button" {{on "click" (fn filter.fns.setVisibility "all")}}>All</button>
+        <button data-test-visibility-filter="private" type="button" {{on "click" (fn filter.fns.setVisibility "private")}}>Private</button>
               
         <ul data-test-repo-list>
           {{#each filter.data.filteredRepos as |repo|}}
@@ -35,7 +35,6 @@ module('Integration | Component | repository-filter', function (hooks) {
 
     // Select the "private" visibility filter
     await click('[data-test-visibility-filter="private"]');
-    await settled();
 
     // Ensure only private repos are shown
     assert
@@ -47,7 +46,6 @@ module('Integration | Component | repository-filter', function (hooks) {
 
     // Select "all" visibility again
     await click('[data-test-visibility-filter="all"]');
-    await settled();
 
     // Ensure all repos are shown again
     assert
@@ -63,9 +61,9 @@ module('Integration | Component | repository-filter', function (hooks) {
 
     await render(hbs`
       <RepositoryFilter @repos={{this.repos}} as |filter|>
-        <button data-test-language-filter="all" {{on "click" (fn filter.fns.setLanguage "all")}}>All</button>
-        <button data-test-language-filter="JavaScript" {{on "click" (fn filter.fns.setLanguage "JavaScript")}}>JavaScript</button>
-        <button data-test-language-filter="Ruby" {{on "click" (fn filter.fns.setLanguage "Ruby")}}>Ruby</button>
+        <button data-test-language-filter="all" type="button" {{on "click" (fn filter.fns.setLanguage "all")}}>All</button>
+        <button data-test-language-filter="JavaScript" type="button" {{on "click" (fn filter.fns.setLanguage "JavaScript")}}>JavaScript</button>
+        <button data-test-language-filter="Ruby" type="button" {{on "click" (fn filter.fns.setLanguage "Ruby")}}>Ruby</button>
         
         <ul data-test-repo-list>
           {{#each filter.data.filteredRepos as |repo|}}
@@ -82,7 +80,6 @@ module('Integration | Component | repository-filter', function (hooks) {
 
     // Select "JavaScript" language filter
     await click('[data-test-language-filter="JavaScript"]');
-    await settled();
 
     // Ensure only JavaScript repos are shown
     assert
@@ -94,7 +91,6 @@ module('Integration | Component | repository-filter', function (hooks) {
 
     // Select "all" language filter again
     await click('[data-test-language-filter="all"]');
-    await settled();
 
     // Ensure all repos are shown again
     assert

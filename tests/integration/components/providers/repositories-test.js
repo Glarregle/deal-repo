@@ -10,7 +10,7 @@ module('Integration | Component | repositories', function (hooks) {
 
   // Mock Search service
   class MockSearchService extends Service {
-    // Simulate fetching repositories
+    // Mock repos fetch
     async fetchRepositories(query) {
       return new Promise((resolve, reject) => {
         later(() => {
@@ -43,14 +43,12 @@ module('Integration | Component | repositories', function (hooks) {
             {{/each}}
           </ul>
         {{/if}}
-        <button data-test-search-button {{on "click" repos.fns.search}}>Search</button>
+        <button data-test-search-button type="button" {{on "click" repos.fns.search}}>Search</button>
       </div>
     </Repositories>`);
 
     // Trigger the search action
     await click('[data-test-search-button]');
-    // Make sure there are no pending runloops
-    await settled();
 
     // Verify that repositories are displayed
     assert
@@ -66,7 +64,7 @@ module('Integration | Component | repositories', function (hooks) {
 
     await render(hbs`<Repositories @params={{this.params}} as |repos|>
       <div data-test-repositories>
-        <button data-test-search-button {{on "click" repos.fns.search}}>Search</button>
+        <button data-test-search-button type="button" {{on "click" repos.fns.search}}>Search</button>
         
         {{#if repos.data.hasRepositories}}
           <ul data-test-repo-list>
@@ -126,7 +124,7 @@ module('Integration | Component | repositories', function (hooks) {
          {{#if repos.data.hasRepositories}}
           <ul data-test-repo-list></ul>
         {{/if}}
-        <button data-test-search-button {{on "click" repos.fns.search}}>Search</button>
+        <button data-test-search-button type="button" {{on "click" repos.fns.search}}>Search</button>
       </div>
     </Repositories>`);
 

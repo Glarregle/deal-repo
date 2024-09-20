@@ -23,8 +23,6 @@ module('Acceptance | organization', function (hooks) {
     this.originalFetch = window.fetch;
 
     window.fetch = (url, options) => {
-      console.log('url', url);
-
       // Mock organization response
       if (url === 'https://api.github.com/orgs/valinor') {
         return Promise.resolve({
@@ -94,7 +92,7 @@ module('Acceptance | organization', function (hooks) {
   test('it searches for an organization and transitions to organization route', async function (assert) {
     await goToOrganization();
     // Assert that the page transitions to the repositories page
-    assert.equal(
+    assert.strictEqual(
       currentURL(),
       '/organization?name=valinor',
       'Transitioned to organization route',
@@ -156,6 +154,6 @@ module('Acceptance | organization', function (hooks) {
       .exists({ count: 2 }, 'Two repositories are rendered');
 
     await click('[data-test-go-back]');
-    assert.equal(currentURL(), '/', 'Transitioned back to index route');
+    assert.strictEqual(currentURL(), '/', 'Transitioned back to index route');
   });
 });
