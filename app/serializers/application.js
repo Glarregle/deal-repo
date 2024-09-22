@@ -1,29 +1,35 @@
 import JSONAPISerializer from '@ember-data/serializer/json-api';
 
 export default class ApplicationSerializer extends JSONAPISerializer {
-  normalizeResponse(store, primaryModelClass, payload) {
-    if (primaryModelClass.modelName === 'repository') {
-      const repositories = payload.items.map((repo) => ({
-        id: `${repo.id}`,
-        type: 'repository',
-        attributes: {
-          name: repo.name,
-          htmlUrl: repo.html_url,
-          language: repo.language,
-          private: repo.private,
-        },
-      }));
+  normalizeResponse(_store, _primaryModelClass, payload) {
+    if (_primaryModelClass.modelName === 'repository') {
+      const repositories = payload.items.map((repo) => {
+        const { id, name, language } = repo;
+        return {
+          id,
+          type: 'repository',
+          attributes: {
+            name,
+            htmlUrl: repo.html_url,
+            language,
+            private: repo.private,
+          },
+        };
+      });
       return { data: repositories };
     }
 
-    if (primaryModelClass.modelName === 'branch') {
-      const branches = payload.map((branch) => ({
-        id: branch.name,
-        type: 'branch',
-        attributes: {
-          name: branch.name,
-        },
-      }));
+    if (_primaryModelClass.modelName === 'branch') {
+      const branches = payload.map((branch) => {
+        const { name } = branch;
+        return {
+          id: name,
+          type: 'branch',
+          attributes: {
+            name,
+          },
+        };
+      });
       return { data: branches };
     }
 

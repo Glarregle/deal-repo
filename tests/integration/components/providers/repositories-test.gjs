@@ -1,9 +1,10 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'tiny-repos/tests/helpers';
+import Repositories from 'tiny-repos/components/repositories';
 import { render, click, settled, waitFor } from '@ember/test-helpers';
-import { hbs } from 'ember-cli-htmlbars';
 import Service from '@ember/service';
 import { later } from '@ember/runloop';
+import { on } from '@ember/modifier';
 
 module('Integration | Component | repositories', function (hooks) {
   setupRenderingTest(hooks);
@@ -32,20 +33,23 @@ module('Integration | Component | repositories', function (hooks) {
   });
 
   test('it can trigger fetch repositories and retrieve results', async function (assert) {
-    this.set('params', { name: 'rails' });
+    const params = { name: 'rails' };
 
-    await render(hbs`<Repositories @params={{this.params}} as |repos|>
-      <div data-test-repositories>
-        {{#if repos.data.hasRepositories}}
-          <ul data-test-repo-list>
-            {{#each repos.data.repositories as |repo|}}
-              <li data-test-repo-item>{{repo.name}}</li>
-            {{/each}}
-          </ul>
-        {{/if}}
-        <button data-test-search-button type="button" {{on "click" repos.fns.search}}>Search</button>
-      </div>
-    </Repositories>`);
+    await render(
+      <template>
+        <Repositories @params={{params}} as |repos|>
+          <div data-test-repositories>
+            {{#if repos.data.hasRepositories}}
+              <ul data-test-repo-list>
+                {{#each repos.data.repositories as |repo|}}
+                  <li data-test-repo-item>{{repo.name}}</li>
+                {{/each}}
+              </ul>
+            {{/if}}
+            <button data-test-search-button type="button" {{on "click" repos.fns.search}}>Search</button>
+          </div>
+        </Repositories>
+      </template>);
 
     // Trigger the search action
     await click('[data-test-search-button]');
@@ -60,30 +64,35 @@ module('Integration | Component | repositories', function (hooks) {
   });
 
   test('it can handle loading state', async function (assert) {
-    this.set('params', { name: 'test' });
+    const params = { name: 'test' };
 
-    await render(hbs`<Repositories @params={{this.params}} as |repos|>
-      <div data-test-repositories>
-        <button data-test-search-button type="button" {{on "click" repos.fns.search}}>Search</button>
-        
-        {{#if repos.data.hasRepositories}}
-          <ul data-test-repo-list>
-            {{#each repos.data.repositories as |repo|}}
-              <li data-test-repo-item>{{repo.name}}</li>
-            {{/each}}
-          </ul>
-        {{/if}}
 
-        {{#if repos.data.isLoading}}
-          <p data-test-loading>Loading...</p>
-        {{/if}}
-        {{#if repos.data.isError}}
-          <p data-test-error>Error fetching repositories.</p>
-        {{/if}}
+    await render(
+      <template>
+        <Repositories @params={{params}} as |repos|>
+          <div data-test-repositories>
+            <button data-test-search-button type="button" {{on "click" repos.fns.search}}>Search</button>
+            
+            {{#if repos.data.hasRepositories}}
+              <ul data-test-repo-list>
+                {{#each repos.data.repositories as |repo|}}
+                  <li data-test-repo-item>{{repo.name}}</li>
+                {{/each}}
+              </ul>
+            {{/if}}
 
-        
-      </div>
-    </Repositories>`);
+            {{#if repos.data.isLoading}}
+              <p data-test-loading>Loading...</p>
+            {{/if}}
+            {{#if repos.data.isError}}
+              <p data-test-error>Error fetching repositories.</p>
+            {{/if}}
+
+          </div>
+        </Repositories>
+      </template>
+    );
+
 
     // Initially, no loading or error message will be shown
     assert
@@ -111,22 +120,27 @@ module('Integration | Component | repositories', function (hooks) {
   });
 
   test('it can handle error state', async function (assert) {
-    this.set('params', { name: 'error' });
+    const params = { name: 'error' };
 
-    await render(hbs`<Repositories @params={{this.params}} as |repos|>
-      <div data-test-repositories>
-        {{#if repos.data.isLoading}}
-          <p data-test-loading>Loading...</p>
-        {{/if}}
-        {{#if repos.data.isError}}
-          <p data-test-error>Error fetching repositories.</p>
-        {{/if}}
-         {{#if repos.data.hasRepositories}}
-          <ul data-test-repo-list></ul>
-        {{/if}}
-        <button data-test-search-button type="button" {{on "click" repos.fns.search}}>Search</button>
-      </div>
-    </Repositories>`);
+    await render(      
+      <template>
+        <Repositories @params={{params}} as |repos|>
+          <div data-test-repositories>
+            {{#if repos.data.isLoading}}
+              <p data-test-loading>Loading...</p>
+            {{/if}}
+            {{#if repos.data.isError}}
+              <p data-test-error>Error fetching repositories.</p>
+            {{/if}}
+             {{#if repos.data.hasRepositories}}
+              <ul data-test-repo-list></ul>
+            {{/if}}
+            <button data-test-search-button type="button" {{on "click" repos.fns.search}}>Search</button>
+          </div>
+        </Repositories>      
+      </template>
+    );
+
 
     // Initially, no loading or error message will be shown
     assert

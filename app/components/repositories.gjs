@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
+import { hash } from '@ember/helper';
 
 export default class RepositoriesComponent extends Component {
   @service search;
@@ -57,4 +58,8 @@ export default class RepositoriesComponent extends Component {
 
   @action
   loadMore() {}
+
+  <template>
+    {{yield (hash data=this.data fns=this.fns)}}
+  </template>
 }
